@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TamAlcoolique</string>
+    <string name="stats_title_alcohol_level">Alcohol level</string>
+    <string name="stats_title_hunger_level">Hunger level</string>
+    <string name="stats_title_urine_level">Urine level</string>
+    <string name="stats_title_coins">Coins:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
