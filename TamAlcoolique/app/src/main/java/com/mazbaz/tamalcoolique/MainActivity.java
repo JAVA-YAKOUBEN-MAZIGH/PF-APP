@@ -5,15 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.mazbaz.tamalcoolique.requests.User;
 import com.mazbaz.tamalcoolique.views.game.game;
 import com.mazbaz.tamalcoolique.views.home.home;
 
 public class MainActivity extends AppCompatActivity {
     Button nav_home, nav_games, nav_shop, nav_storage, header_settings;
+    public static User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new home());
     }
 
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
