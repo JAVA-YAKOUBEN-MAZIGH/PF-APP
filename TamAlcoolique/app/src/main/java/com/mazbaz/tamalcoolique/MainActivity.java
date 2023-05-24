@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         nav_home = findViewById(R.id.nav_home_button);
         nav_games = findViewById(R.id.nav_games_button);
+        header_settings = findViewById(R.id.nav_settings_button);
 
         nav_home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 replaceFragment(new game());
+            }
+        });
+
+        header_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.removeData(getApplicationContext(), "jwt");
             }
         });
         replaceFragment(new home());
