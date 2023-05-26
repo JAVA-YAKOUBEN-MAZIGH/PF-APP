@@ -39,9 +39,7 @@ public class User {
     @SerializedName("urine_level")
     @Expose
     private Integer urineLevel;
-    @SerializedName("role")
-    @Expose
-    private Role role;
+
     @SerializedName("items")
     @Expose
     private List<Item> items;
@@ -68,7 +66,7 @@ public class User {
         return updatedAt;
     }
 
-    public Object getAlcoholLevel() {
+    public Integer getAlcoholLevel() {
         return alcoholLevel;
     }
 
@@ -110,5 +108,24 @@ public class User {
 
     public void rmItem(Item item){
         this.items.remove(item);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", provider='" + provider + '\'' +
+                ", confirmed=" + confirmed +
+                ", blocked=" + blocked +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", alcoholLevel=" + alcoholLevel +
+                ", hungerLevel=" + hungerLevel +
+                ", urineLevel=" + urineLevel +
+                ", items=" + items +
+                ", money=" + money +
+                '}';
     }
 }

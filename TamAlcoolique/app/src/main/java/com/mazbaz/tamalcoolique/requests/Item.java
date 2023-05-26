@@ -3,7 +3,7 @@ package com.mazbaz.tamalcoolique.requests;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.mazbaz.tamalcoolique.MainActivity;
-import com.mazbaz.tamalcoolique.Utils;
+import com.mazbaz.tamalcoolique.requests.images.Image;
 
 public class Item {
 
@@ -13,15 +13,6 @@ public class Item {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("createdAt")
-    @Expose
-    private String createdAt;
-    @SerializedName("updatedAt")
-    @Expose
-    private String updatedAt;
-    @SerializedName("publishedAt")
-    @Expose
-    private String publishedAt;
     @SerializedName("description")
     @Expose
     private String description;
@@ -40,9 +31,8 @@ public class Item {
     @SerializedName("money")
     @Expose
     private Integer money;
-    @SerializedName("buyable")
-    @Expose
-    private Boolean buyable;
+
+    private Image image;
 
     public Integer getId() {
         return id;
@@ -56,18 +46,9 @@ public class Item {
         this.name = name;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-
-
-
-
     public String getDescription() {
         return description;
     }
-
 
     public Integer getPrice() {
         return price;
@@ -109,12 +90,12 @@ public class Item {
         this.money += money;
     }
 
-    public Boolean getBuyable() {
-        return buyable;
+    public Image getImage() {
+        return image;
     }
 
     public void buy() {
-        if (MainActivity.user.getMoney() >= this.price || this.buyable) {
+        if (MainActivity.user.getMoney() >= this.price) {
             MainActivity.user.addMoney(-this.price);
             MainActivity.user.addItems(this);
         }
@@ -125,8 +106,24 @@ public class Item {
             MainActivity.user.addAlcoholLevel(this.alcoholLevel);
             MainActivity.user.addHungerLevel(this.foodLevel);
             MainActivity.user.addUrineLevel(this.urineLevel);
+            MainActivity.user.addMoney(this.money);
 
             MainActivity.user.rmItem(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", alcoholLevel=" + alcoholLevel +
+                ", foodLevel=" + foodLevel +
+                ", urineLevel=" + urineLevel +
+                ", money=" + money +
+                ", image=" + image +
+                '}';
     }
 }

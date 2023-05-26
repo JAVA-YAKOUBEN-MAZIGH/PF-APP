@@ -60,8 +60,7 @@ public class login extends AppCompatActivity {
         });
     }
     private void login() {
-        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
-        MyRequestQueue.add(new StringRequest(Request.Method.POST, "http://10.211.55.15:1337/api/auth/local/?populate=*", new Response.Listener<String>() {
+        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.POST, "http://10.211.55.15:1337/api/auth/local/?populate=*", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -102,10 +101,6 @@ public class login extends AppCompatActivity {
             }
         }) {
             protected Map<String, String> getParams() {
-                System.out.println("-----------------------------------------------");
-                System.out.println(email.getEditableText().toString());
-                System.out.println(password.getEditableText().toString());
-
                 Map<String, String> MyData = new HashMap<String, String>();
                 MyData.put("identifier", email.getEditableText().toString()); //Add the data you'd like to send to the server.
                 MyData.put("password", password.getEditableText().toString()); //Add the data you'd like to send to the server.

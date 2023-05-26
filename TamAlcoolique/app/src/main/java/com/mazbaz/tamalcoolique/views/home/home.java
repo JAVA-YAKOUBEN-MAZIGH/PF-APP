@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.mazbaz.tamalcoolique.MainActivity;
 import com.mazbaz.tamalcoolique.R;
 import com.mazbaz.tamalcoolique.Utils;
 
@@ -20,9 +21,9 @@ public class home extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         ImageView userAvatarView = view.findViewById(R.id.character);
-        String userAvatarUrl = "https://avatars.dicebear.com/v2/female/anna.svg";
-        Utils.fetchSvg(getContext(), userAvatarUrl, userAvatarView);
+        String userAvatarUrl = "https://api.dicebear.com/6.x/avataaars/svg?style=circle&skinColor=ffdbb4&top=shortFlat&eyebrows=defaultNatural&eyes=default&mouth=default&clothing=collarAndSweater&clothesColor=3c4f5c";
 
+        Utils.fetchSvg(getContext(), userAvatarUrl, userAvatarView);
         return view;
     }
 }

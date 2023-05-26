@@ -61,8 +61,7 @@ public class register extends AppCompatActivity {
     }
 
     private void register() {
-        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
-        MyRequestQueue.add(new StringRequest(Request.Method.POST, "http://10.211.55.15:1337/api/auth/local/register?populate=*", new Response.Listener<String>() {
+        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.POST, "http://10.211.55.15:1337/api/auth/local/register?populate=*", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -80,7 +79,6 @@ public class register extends AppCompatActivity {
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
-                String statusCode = String.valueOf(error.networkResponse.statusCode);
                 //get response body and parse with appropriate encoding
                 if(error.networkResponse.data!=null) {
                     try {
