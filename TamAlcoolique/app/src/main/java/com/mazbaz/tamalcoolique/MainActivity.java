@@ -1,10 +1,14 @@
 package com.mazbaz.tamalcoolique;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static User user;
 
+    private static Fragment actualFragment;
+
+    Intent BackGroundIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         urine = findViewById(R.id.stats_urine_bar);
 
         coins = findViewById(R.id.stats_coins_title);
+
 
         nav_home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,15 +92,19 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new inventory());
             }
         });
+
+
+        createUser(getApplicationContext());
+
         header_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Utils.removeData(getApplicationContext(), "jwt");
                 setContentView(R.layout.activity_login);
+
+                stopService(BackGroundIntent);
             }
         });
-
-        createUser();
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -100,11 +112,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
+        actualFragment = fragment;
     }
 
 
-    private void createUser() {
-        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.GET, "http://10.211.55.15:1337/api/users/me?populate[1]=items.image",
+    private void createUser(Context context) {
+        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.GET, "http://" + Utils.getData(urine.getContext(), "db") + "/api/users/me?populate[1]=items.image",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -113,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
 
                         replaceFragment(new home());
                         refreshDisplayedDatas();
+
+                        BackGroundIntent = new Intent(context, BackgroundService.class);
+                        startService(BackGroundIntent);
                     }
                 },
                 new Response.ErrorListener() {
@@ -137,6 +153,13 @@ public class MainActivity extends AppCompatActivity {
 
         coins.setText("Coins: " + user.getMoney().toString());
 
+        if (actualFragment instanceof home) {
+            home homeFragment = home.getInstance();
+            if (homeFragment != null) {
+                homeFragment.refreshView();
+            }
+        }
+
         JSONObject userData = new JSONObject();
         try {
             userData.put("alcohol_level", user.getAlcoholLevel());
@@ -147,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, "http://10.211.55.15:1337/api/users/" + user.getId(), userData,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, "http://" + Utils.getData(urine.getContext(), "db") + "/api/users/" + user.getId(), userData,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

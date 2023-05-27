@@ -36,7 +36,6 @@ public class login extends AppCompatActivity {
             goToMain();
         }
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -44,7 +43,6 @@ public class login extends AppCompatActivity {
         go = findViewById(R.id.button);
         email = findViewById(R.id.email_input);
         password = findViewById(R.id.password_input);
-
         findViewById(R.id.goToRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +58,7 @@ public class login extends AppCompatActivity {
         });
     }
     private void login() {
-        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.POST, "http://10.211.55.15:1337/api/auth/local/?populate=*", new Response.Listener<String>() {
+        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.POST, "http://" + Utils.getData(getApplicationContext(), "db") + "/api/auth/local/?populate=*", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 

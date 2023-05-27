@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.mazbaz.tamalcoolique.MainActivity;
 import com.mazbaz.tamalcoolique.R;
 import com.mazbaz.tamalcoolique.Utils;
 import java.io.UnsupportedEncodingException;
@@ -28,13 +29,15 @@ import java.util.Map;
 public class register extends AppCompatActivity {
     private TextView error_field;
     private Button go;
-    private TextInputEditText username, email, password;
+    private TextInputEditText username, email, password, database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Utils.getData(getApplicationContext(), "jwt") != null) {
             goToLogin();
         }
+
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
@@ -44,7 +47,11 @@ public class register extends AppCompatActivity {
         username = findViewById(R.id.username_input);
         email = findViewById(R.id.email_input);
         password = findViewById(R.id.password_input);
+        database = findViewById(R.id.database_input);
 
+        if (Utils.getData(getApplicationContext(), "db") != null) {
+            database.setText(Utils.getData(getApplicationContext(), "db"));
+        }
         go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +68,8 @@ public class register extends AppCompatActivity {
     }
 
     private void register() {
-        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.POST, "http://10.211.55.15:1337/api/auth/local/register?populate=*", new Response.Listener<String>() {
+        Utils.storeData(getApplicationContext(), "db", database.getEditableText().toString());
+        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.POST, "http://" + Utils.getData(getApplicationContext(), "db") + "/api/auth/local/register?populate=*", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 

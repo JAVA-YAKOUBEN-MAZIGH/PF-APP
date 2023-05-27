@@ -57,7 +57,7 @@ public class GuessMyDrink extends AppCompatActivity {
     }
 
     private void getCoctails(Context context) {
-        Volley.newRequestQueue(context).add(new StringRequest(Request.Method.GET, "http://10.211.55.15:1337/api/coctails?populate=*",
+        Volley.newRequestQueue(context).add(new StringRequest(Request.Method.GET, "http://" + Utils.getData(context, "db") + "/api/coctails?populate=*",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -94,7 +94,13 @@ public class GuessMyDrink extends AppCompatActivity {
 
     private void play(Context context) {
         if (level >= max_level) {
-            win(context);
+            if (points == max_level) {
+                win(context);
+            } else {
+                Toast.makeText(context, "Ahahah you'r bad !",Toast.LENGTH_SHORT).show();
+            }
+            finish();
+            startActivity(new Intent(context, MainActivity.class));
             return;
         }
 
@@ -159,8 +165,6 @@ public class GuessMyDrink extends AppCompatActivity {
         MainActivity.user.addUrineLevel(7);
         MainActivity.refreshDisplayedDatas();
 
-        finish();
-        startActivity(new Intent(context, MainActivity.class));
         Toast.makeText(context, "GG ! You are totally drunk!",Toast.LENGTH_SHORT).show();
     }
 }

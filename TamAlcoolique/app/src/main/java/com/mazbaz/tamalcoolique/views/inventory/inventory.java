@@ -62,7 +62,7 @@ public class inventory extends Fragment {
         imageView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
 
         Picasso.get()
-                .load("http://10.211.55.15:1337" + item.getImage().getUrl())
+                .load("http://" + Utils.getData(getContext(), "db") + item.getImage().getUrl())
                 .into(imageView);
 
         // Ajout de l'ImageView au LinearLayout

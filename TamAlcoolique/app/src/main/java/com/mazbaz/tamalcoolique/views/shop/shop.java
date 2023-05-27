@@ -91,7 +91,7 @@ public class shop extends Fragment {
         imageView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
 
         Picasso.get()
-                .load("http://10.211.55.15:1337" + item.getImage().getUrl())
+                .load("http://" + Utils.getData(getContext(), "db") + item.getImage().getUrl())
                 .into(imageView);
 
         // Ajout de l'ImageView au LinearLayout
@@ -144,7 +144,7 @@ public class shop extends Fragment {
     }
 
     private void loadCate() {
-        Volley.newRequestQueue(getActivity()).add(new StringRequest(Request.Method.GET, "http://10.211.55.15:1337/api/categories?populate[1]=items.image",
+        Volley.newRequestQueue(getActivity()).add(new StringRequest(Request.Method.GET, "http://" + Utils.getData(getActivity(), "db") + "/api/categories?populate[1]=items.image",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
