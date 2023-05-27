@@ -22,7 +22,7 @@ public class BackgroundService extends Service {
             public void run() {
                 MainActivity.user.addHungerLevel(-1);
                 MainActivity.user.addAlcoholLevel(-1);
-                MainActivity.user.addUrineLevel(1);
+                MainActivity.user.addUrineLevel(-1);
                 MainActivity.refreshDisplayedDatas();
             }
         }, 300000, 300000);

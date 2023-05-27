@@ -160,9 +160,9 @@ public class GuessMyDrink extends AppCompatActivity {
 
     private void win(Context context) {
         MainActivity.user.addMoney(100);
-        MainActivity.user.addHungerLevel(-3);
-        MainActivity.user.addAlcoholLevel(10);
-        MainActivity.user.addUrineLevel(7);
+        MainActivity.user.addHungerLevel(-1);
+        MainActivity.user.addAlcoholLevel(2);
+        MainActivity.user.addUrineLevel(1);
         MainActivity.refreshDisplayedDatas();
 
         Toast.makeText(context, "GG ! You are totally drunk!",Toast.LENGTH_SHORT).show();
