@@ -21,9 +21,24 @@ public class home extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         ImageView userAvatarView = view.findViewById(R.id.character);
-        String userAvatarUrl = "https://api.dicebear.com/6.x/avataaars/svg?style=circle&skinColor=ffdbb4&top=shortFlat&eyebrows=defaultNatural&eyes=default&mouth=default&clothing=collarAndSweater&clothesColor=3c4f5c";
+
+        double all = ((MainActivity.user.getUrineLevel() + MainActivity.user.getAlcoholLevel() + MainActivity.user.getHungerLevel()) / 30.0) * 100;
+
+    System.out.println("jauges" + all);
+        String userAvatarUrl = "";
+        if (all < 31) {
+            userAvatarUrl = "https://api.dicebear.com/6.x/avataaars/svg?style=circle&skinColor=8feb34&top=shortFlat&eyebrows=defaultNatural&eyes=xDizzy&mouth=vomit&clothing=collarAndSweater&clothesColor=3c4f5c";
+        } else if (all >= 30 && all < 70) {
+            userAvatarUrl = "https://api.dicebear.com/6.x/avataaars/svg?style=circle&skinColor=ffdbb4&top=shortFlat&eyebrows=defaultNatural&eyes=default&mouth=default&clothing=collarAndSweater&clothesColor=3c4f5c";
+        } else if (all >= 70) {
+            userAvatarUrl = "https://api.dicebear.com/6.x/avataaars/svg?style=circle&skinColor=ffdbb4&top=shortFlat&eyebrows=raisedExcited&eyes=hearts&mouth=smile&clothing=collarAndSweater&clothesColor=3c4f5c";
+        }
 
         Utils.fetchSvg(getContext(), userAvatarUrl, userAvatarView);
         return view;
+    }
+
+    public void refreshAvatar() {
+
     }
 }

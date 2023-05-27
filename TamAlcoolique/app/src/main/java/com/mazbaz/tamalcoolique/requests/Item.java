@@ -112,7 +112,7 @@ public class Item {
         return image;
     }
 
-    public void buy(Context context) throws IOException {
+    public void buy(Context context) {
         if (MainActivity.user.getItems().stream().anyMatch(item -> item.getId() == this.getId())) {
             Toast.makeText(context, "you already have " + this.getName() + " in your inventory", Toast.LENGTH_SHORT).show();
             return;
@@ -145,6 +145,9 @@ public class Item {
 
             editUser(context, "disconnect");
 
+            Toast.makeText(context, this.getName() + " consumed !", Toast.LENGTH_SHORT).show();
+
+            MainActivity.refreshDisplayedDatas();
         }
     }
 

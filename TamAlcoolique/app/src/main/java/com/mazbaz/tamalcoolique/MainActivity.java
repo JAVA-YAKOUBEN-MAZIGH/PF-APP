@@ -16,25 +16,26 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.mazbaz.tamalcoolique.requests.User;
 import com.mazbaz.tamalcoolique.views.game.game;
 import com.mazbaz.tamalcoolique.views.home.home;
+import com.mazbaz.tamalcoolique.views.inventory.inventory;
 import com.mazbaz.tamalcoolique.views.shop.shop;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     Button header_settings, nav_home, nav_games, nav_shop, nav_storage;
-    static ProgressBar alchool;
-    static ProgressBar hunger;
-    static ProgressBar urine;
+    static ProgressBar alcohol, hunger, urine;
     static TextView coins;
-
-    static Fragment actualFrag;
 
     public static User user;
 
@@ -45,9 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
         nav_home = findViewById(R.id.nav_home_button);
         nav_games = findViewById(R.id.nav_games_button);
+        nav_shop = findViewById(R.id.nav_shop_button);
+        nav_storage = findViewById(R.id.nav_storage_button);
+
         header_settings = findViewById(R.id.nav_settings_button);
 
-        alchool = findViewById(R.id.stats_alcoholLevel_bar);
+        alcohol = findViewById(R.id.stats_alcoholLevel_bar);
         hunger = findViewById(R.id.stats_hunger_bar);
         urine = findViewById(R.id.stats_urine_bar);
 
@@ -67,14 +71,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        nav_shop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new shop());
+            }
+        });
+
+        nav_storage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new inventory());
+            }
+        });
         header_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Utils.removeData(getApplicationContext(), "jwt");
+                setContentView(R.layout.activity_login);
             }
         });
 
-        replaceFragment(new shop());
         createUser();
     }
 
@@ -83,23 +100,18 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
-        actualFrag = fragment;
     }
 
-    public void refreshFragment() {
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.detach(actualFrag);
-        ft.attach(actualFrag);
-        ft.commit();
-    }
 
     private void createUser() {
-        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.GET, "http://10.211.55.15:1337/api/users/me?populate=*",
+        Volley.newRequestQueue(this).add(new StringRequest(Request.Method.GET, "http://10.211.55.15:1337/api/users/me?populate[1]=items.image",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Gson gson = new Gson();
                         user = gson.fromJson(response, User.class);
+
+                        replaceFragment(new home());
                         refreshDisplayedDatas();
                     }
                 },
@@ -119,10 +131,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void refreshDisplayedDatas() {
-        alchool.setProgress(user.getAlcoholLevel());
+        alcohol.setProgress(user.getAlcoholLevel());
         hunger.setProgress(user.getHungerLevel());
         urine.setProgress(user.getUrineLevel());
 
         coins.setText("Coins: " + user.getMoney().toString());
+
+        JSONObject userData = new JSONObject();
+        try {
+            userData.put("alcohol_level", user.getAlcoholLevel());
+            userData.put("hunger_level", user.getHungerLevel());
+            userData.put("urine_level", user.getUrineLevel());
+            userData.put("money", user.getMoney().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, "http://10.211.55.15:1337/api/users/" + user.getId(), userData,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Traitement de la réponse en cas de succès
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Traitement de l'erreur en cas d'échec
+                        System.out.println("Erreur lors de la mise à jour du nom d'utilisateur: " + error.toString());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Ajout des en-têtes à la requête (Content-Type et Authorization)
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + Utils.getData(alcohol.getContext(), "jwt"));
+                return headers;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.alcohol.getContext());
+        requestQueue.add(request);
     }
 }

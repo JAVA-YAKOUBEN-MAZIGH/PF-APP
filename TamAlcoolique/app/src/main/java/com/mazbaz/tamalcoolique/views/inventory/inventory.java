@@ -1,4 +1,4 @@
-package com.mazbaz.tamalcoolique.views.shop;
+package com.mazbaz.tamalcoolique.views.inventory;
 
 import android.os.Bundle;
 
@@ -33,50 +33,21 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class shop extends Fragment {
+public class inventory extends Fragment {
 
     View view;
-    LinearLayout shopContainer;
-    Categories categories;
 
+    LinearLayout inventoryContainer;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_shop, container, false);
-        shopContainer = view.findViewById(R.id.inventory_container);
+        view = inflater.inflate(R.layout.fragment_inventory, container, false);
+        inventoryContainer = view.findViewById(R.id.inventory_container);
 
-        loadCate();
+        loadItems();
         return view;
     }
 
-    private void addCate(String name, String desc) {
-        // Création du TextView
-        TextView titleTextView = new TextView(getActivity());
-        titleTextView.setText(name);
-        titleTextView.setTextAppearance(getActivity(), android.R.style.TextAppearance_Material_Display1);
-
-        TextView descTextView = new TextView(getActivity());
-        descTextView.setText(desc);
-
-
-        // Ajout du TextView au LinearLayout
-        shopContainer.addView(titleTextView);
-        shopContainer.addView(descTextView);
-
-        // Création du View divider2
-        View dividerView = new View(getActivity());
-
-        dividerView.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-
-        TypedValue typedValue = new TypedValue();
-        getActivity().getTheme().resolveAttribute(android.R.attr.listDivider, typedValue, true);
-        int dividerDrawableRes = typedValue.resourceId;
-        dividerView.setBackgroundResource(dividerDrawableRes);
-
-        shopContainer.addView(dividerView);
-    }
     private void addProduct(Item item) throws IOException {
         LinearLayout productLayout = new LinearLayout(getActivity());
         productLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -116,7 +87,7 @@ public class shop extends Fragment {
         textView2.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView2.setText("Price : " + item.getPrice() + " Coins");
+        textView2.setText("Alcohol : " + item.getAlcoholLevel() + " Hunger : " + item.getFoodLevel() + " Urine : " + item.getUrineLevel() + " Coins : " + item.getMoney());
 
         // Création du Button
         Button button = new Button(getActivity());
@@ -124,7 +95,7 @@ public class shop extends Fragment {
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-        button.setText("Buy !");
+        button.setText("Use !");
         // Ajout des vues au LinearLayout interne
         innerLayout.addView(textView1);
         innerLayout.addView(textView2);
@@ -133,48 +104,24 @@ public class shop extends Fragment {
         productLayout.addView(innerLayout);
 
         // Ajout du LinearLayout contenant l'ImageView au LinearLayout principal
-        shopContainer.addView(productLayout);
+        inventoryContainer.addView(productLayout);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                item.buy(getActivity());
+                item.consume(getActivity());
+                inventoryContainer.removeView(productLayout);
             }
         });
     }
 
-    private void loadCate() {
-        Volley.newRequestQueue(getActivity()).add(new StringRequest(Request.Method.GET, "http://10.211.55.15:1337/api/categories?populate[1]=items.image",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Gson gson = new Gson();
-                        categories = gson.fromJson(response, Categories.class);
-
-                        for (Categorie categorie: categories.getCategories()) {
-                            addCate(categorie.getName(), categorie.getDescription());
-                            for (Item item : categorie.getItems()) {
-                                try {
-                                    addProduct(item);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("oups :/ shop l:89");
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put("Authorization", "Bearer " + Utils.getData(getActivity(), "jwt"));
-                return MyData;
+    private void loadItems() {
+        for (Item item : MainActivity.user.getItems()) {
+            try {
+                addProduct(item);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        });
+        }
     }
 }
