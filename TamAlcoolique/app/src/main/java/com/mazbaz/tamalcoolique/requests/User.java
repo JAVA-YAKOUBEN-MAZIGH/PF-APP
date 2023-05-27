@@ -106,8 +106,8 @@ public class User {
         this.items.add(item);
     }
 
-    public void rmItem(Item item){
-        this.items.remove(item);
+    public void rmItem(Item toitem){
+        this.getItems().removeIf(item -> item.getId() == toitem.getId());
     }
 
     @Override

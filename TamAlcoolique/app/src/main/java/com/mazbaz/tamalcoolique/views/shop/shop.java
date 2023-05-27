@@ -1,6 +1,8 @@
 package com.mazbaz.tamalcoolique.views.shop;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -30,7 +32,10 @@ import com.mazbaz.tamalcoolique.requests.Item;
 import com.mazbaz.tamalcoolique.requests.User;
 import com.mazbaz.tamalcoolique.requests.categories.Categorie;
 import com.mazbaz.tamalcoolique.requests.categories.Categories;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,20 +51,23 @@ public class shop extends Fragment {
         view = inflater.inflate(R.layout.fragment_shop, container, false);
         shopContainer = view.findViewById(R.id.shop_container);
 
-        addCate("Cate1");
         loadCate();
         return view;
     }
 
-    private void addCate(String name) {
+    private void addCate(String name, String desc) {
         // Création du TextView
         TextView titleTextView = new TextView(getActivity());
         titleTextView.setText(name);
         titleTextView.setTextAppearance(getActivity(), android.R.style.TextAppearance_Material_Display1);
 
+        TextView descTextView = new TextView(getActivity());
+        descTextView.setText(desc);
+
 
         // Ajout du TextView au LinearLayout
         shopContainer.addView(titleTextView);
+        shopContainer.addView(descTextView);
 
         // Création du View divider2
         View dividerView = new View(getActivity());
@@ -75,7 +83,7 @@ public class shop extends Fragment {
 
         shopContainer.addView(dividerView);
     }
-    private void addProduct(Item item) {
+    private void addProduct(Item item) throws IOException {
         LinearLayout productLayout = new LinearLayout(getActivity());
         productLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -86,10 +94,11 @@ public class shop extends Fragment {
 
         // Création de l'ImageView
         ImageView imageView = new ImageView(getActivity());
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setImageResource(R.drawable.ic_launcher_background);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
+
+        Picasso.get()
+                .load("http://10.211.55.15:1337" + item.getImage().getUrl())
+                .into(imageView);
 
         // Ajout de l'ImageView au LinearLayout
         productLayout.addView(imageView);
@@ -113,7 +122,7 @@ public class shop extends Fragment {
         textView2.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView2.setText("Price : " + item.getPrice());
+        textView2.setText("Price : " + item.getPrice() + " Coins");
 
         // Création du Button
         Button button = new Button(getActivity());
@@ -122,7 +131,6 @@ public class shop extends Fragment {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         button.setText("Buy !");
-
         // Ajout des vues au LinearLayout interne
         innerLayout.addView(textView1);
         innerLayout.addView(textView2);
@@ -137,7 +145,11 @@ public class shop extends Fragment {
             @Override
             public void onClick(View v) {
                 if (MainActivity.user.getMoney() >= item.getPrice()) {
-                    item.buy();
+                    try {
+                        item.buy(getActivity());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
@@ -152,7 +164,14 @@ public class shop extends Fragment {
                         categories = gson.fromJson(response, Categories.class);
 
                         for (Categorie categorie: categories.getCategories()) {
-                            System.out.println("adadadasdqdqsdqd" + categorie.getDescription());
+                            addCate(categorie.getName(), categorie.getDescription());
+                            for (Item item : categorie.getItems()) {
+                                try {
+                                    addProduct(item);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
                         }
                     }
                 },

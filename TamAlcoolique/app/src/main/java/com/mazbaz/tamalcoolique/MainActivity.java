@@ -29,10 +29,12 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     Button header_settings, nav_home, nav_games, nav_shop, nav_storage;
-    ProgressBar alchool, hunger, urine;
-    TextView coins;
+    static ProgressBar alchool;
+    static ProgressBar hunger;
+    static ProgressBar urine;
+    static TextView coins;
 
-    Fragment actualFrag;
+    static Fragment actualFrag;
 
     public static User user;
 
@@ -116,13 +118,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void refreshDisplayedDatas() {
+    public static void refreshDisplayedDatas() {
         alchool.setProgress(user.getAlcoholLevel());
         hunger.setProgress(user.getHungerLevel());
         urine.setProgress(user.getUrineLevel());
 
         coins.setText("Coins: " + user.getMoney().toString());
-
-        refreshFragment();
     }
 }

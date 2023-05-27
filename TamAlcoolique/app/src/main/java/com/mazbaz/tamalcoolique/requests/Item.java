@@ -1,9 +1,27 @@
 package com.mazbaz.tamalcoolique.requests;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.mazbaz.tamalcoolique.MainActivity;
+import com.mazbaz.tamalcoolique.Utils;
 import com.mazbaz.tamalcoolique.requests.images.Image;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 
 public class Item {
 
@@ -94,21 +112,39 @@ public class Item {
         return image;
     }
 
-    public void buy() {
-        if (MainActivity.user.getMoney() >= this.price) {
-            MainActivity.user.addMoney(-this.price);
-            MainActivity.user.addItems(this);
+    public void buy(Context context) throws IOException {
+        if (MainActivity.user.getItems().stream().anyMatch(item -> item.getId() == this.getId())) {
+            Toast.makeText(context, "you already have " + this.getName() + " in your inventory", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        if (MainActivity.user.getMoney() < this.price) {
+            Toast.makeText(context, "you don't have enough Coins", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        MainActivity.user.addMoney(-this.price);
+        MainActivity.user.addItems(this);
+
+        editUser(context, "connect");
+
+
+        Toast.makeText(context, this.getName() + "purchased for " + this.price + " Coins", Toast.LENGTH_SHORT).show();
+        MainActivity.refreshDisplayedDatas();
+
     }
 
-    public void consume() {
-        if (MainActivity.user.getItems().contains(this)) {
+    public void consume(Context context) {
+        if (MainActivity.user.getItems().stream().anyMatch(item -> item.getId() == this.getId())) {
             MainActivity.user.addAlcoholLevel(this.alcoholLevel);
             MainActivity.user.addHungerLevel(this.foodLevel);
             MainActivity.user.addUrineLevel(this.urineLevel);
             MainActivity.user.addMoney(this.money);
 
             MainActivity.user.rmItem(this);
+
+            editUser(context, "disconnect");
+
         }
     }
 
@@ -125,5 +161,46 @@ public class Item {
                 ", money=" + money +
                 ", image=" + image +
                 '}';
+    }
+
+    private void editUser(Context context, String type) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        String url = "http://10.211.55.15:1337/api/users/" + MainActivity.user.getId();
+
+        String requestBody = "{\n\t\"items\" : {\n\t\t\t\"" + type + "\" : [" + this.getId().toString() + "]\n\t\t}\n}\n";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Traitement de la réponse
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println(error);
+                    }
+                }) {
+            @Override
+            public byte[] getBody() {
+                return requestBody.getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + Utils.getData(context, "jwt"));
+                return headers;
+            }
+        };
+
+        requestQueue.add(request);
     }
 }
