@@ -17,6 +17,9 @@
         android:theme="@style/Theme.TamAlcoolique"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".views.game.OneShot"
+            android:exported="false" />
 
         <service android:name=".BackgroundService" />
 

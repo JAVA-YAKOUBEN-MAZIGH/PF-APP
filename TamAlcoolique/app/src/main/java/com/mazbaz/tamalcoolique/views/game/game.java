@@ -33,7 +33,7 @@ public class game extends Fragment {
         view.findViewById(R.id.game2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getActivity(), OneShot.class));
             }
         });
 
