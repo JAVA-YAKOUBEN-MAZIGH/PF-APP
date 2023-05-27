@@ -93,6 +93,10 @@ public class GuessMyDrink extends AppCompatActivity {
     }
 
     private void play(Context context) {
+        if (level >= max_level) {
+            win(context);
+            return;
+        }
 
         updateRateBar();
         game_container.removeAllViews();
@@ -101,7 +105,7 @@ public class GuessMyDrink extends AppCompatActivity {
 
         name.setText(coctail.getName());
 
-        for (Ingredient ingredient: shuffleIngredients(coctail.getIngredients(), coctail.getBadIngredient())) {
+        for (Ingredient ingredient : shuffleIngredients(coctail.getIngredients(), coctail.getBadIngredient())) {
             // Création du Button
             Button button = new Button(getApplicationContext());
 
@@ -114,41 +118,30 @@ public class GuessMyDrink extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Ingredient selectedIngredient = ingredient;
 
-                    if (ingredient.getId() == coctail.getBadIngredient().getId()) {
-                        if (level == coctails.getCoctails().size()-1) {
-                            win(context);
-                            return;
-                        }
-
-                        Toast.makeText(context, "Good job !",Toast.LENGTH_SHORT).show();
+                    if (selectedIngredient.getId() == coctail.getBadIngredient().getId()) {
+                        Toast.makeText(context, "Good job!", Toast.LENGTH_SHORT).show();
                         points++;
-                        level++;
-
-                        play(context);
                     } else {
-                        level++;
-                        Toast.makeText(context, "HAHAHA you're bad !",Toast.LENGTH_SHORT).show();
-                        play(context);
+                        Toast.makeText(context, "HAHAHA you're bad!", Toast.LENGTH_SHORT).show();
                     }
+
+                    level++;
+                    play(context);
                 }
             });
-
         }
     }
 
     public static List<Ingredient> shuffleIngredients(List<Ingredient> ingredients, Ingredient badIngredient) {
-        // Créer une copie de la liste d'ingrédients
         List<Ingredient> shuffledIngredients = new ArrayList<>(ingredients);
 
-        // Mélanger les ingrédients de manière aléatoire
         Collections.shuffle(shuffledIngredients);
 
-        // Générer un index aléatoire pour insérer le badIngredient
         Random random = new Random();
         int randomIndex = random.nextInt(shuffledIngredients.size() + 1);
 
-        // Insérer le badIngredient à l'index aléatoire
         shuffledIngredients.add(randomIndex, badIngredient);
 
         return shuffledIngredients;
