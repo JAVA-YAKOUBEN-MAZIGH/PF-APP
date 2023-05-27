@@ -70,17 +70,11 @@ public class User {
         return alcoholLevel;
     }
 
-    public void addAlcoholLevel(Integer alcoholLevel) {
-        this.alcoholLevel += alcoholLevel;
-    }
 
     public Integer getHungerLevel() {
         return hungerLevel;
     }
 
-    public void addHungerLevel(Integer hungerLevel) {
-        this.hungerLevel += hungerLevel;
-    }
 
     public Integer getUrineLevel() {
         return urineLevel;
@@ -88,8 +82,36 @@ public class User {
 
     public void addUrineLevel(Integer urineLevel) {
         this.urineLevel += urineLevel;
+
+        // Limiter la valeur à un maximum de +10 et un minimum de 0
+        if (this.urineLevel > 10) {
+            this.urineLevel = 10;
+        } else if (this.urineLevel < 0) {
+            this.urineLevel = 0;
+        }
     }
 
+    public void addHungerLevel(Integer hungerLevel) {
+        this.hungerLevel += hungerLevel;
+
+        // Limiter la valeur à un maximum de +10 et un minimum de 0
+        if (this.hungerLevel > 10) {
+            this.hungerLevel = 10;
+        } else if (this.hungerLevel < 0) {
+            this.hungerLevel = 0;
+        }
+    }
+
+    public void addAlcoholLevel(Integer alcoholLevel) {
+        this.alcoholLevel += alcoholLevel;
+
+        // Limiter la valeur à un maximum de +10 et un minimum de 0
+        if (this.alcoholLevel > 10) {
+            this.alcoholLevel = 10;
+        } else if (this.alcoholLevel < 0) {
+            this.alcoholLevel = 0;
+        }
+    }
     public Integer getMoney() {
         return money;
     }

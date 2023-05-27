@@ -14,9 +14,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.TamAlcoolique"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".views.game.GuessMyDrink"
+            android:exported="false" />
         <activity
             android:name=".views.auth.register"
             android:exported="false" />
