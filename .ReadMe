@@ -4,7 +4,7 @@ Welcome to TamAlcoolique !
 
 ## Prerequisites
 
-This project utilizes [Strapi](https://strapi.io/), a flexible and open-source headless CMS, along with the [Transformer](https://market.strapi.io/plugins/strapi-plugin-import-export-entries#install-now-section) plugin and [import-export-entries](https://market.strapi.io/plugins/strapi-plugin-import-export-entries#install-now-section) package. This README provides instructions on how to install and set up the required components to get started.
+This project utilizes [Strapi](https://strapi.io/), a flexible and open-source headless CMS, along with the [Transformer](https://market.strapi.io/plugins/strapi-plugin-import-export-entries#install-now-section) plugin. This README provides instructions on how to install and set up the required components to get started.
 
 Before you begin, ensure that you have the following prerequisites installed on your system:
 
@@ -21,9 +21,8 @@ Follow the steps below to install and configure the project:
 
 ## Strapi configuration 
 
-- Once transformer and import-export-entries installed, go to your strapi admin panel and import the `PF-APP/database.json` file.
-- Go to `Settings > Roles` edit `Authenticated` and give it all the permissions.
- 
+Once transformer installed, follow the procedure for importing unencrypted data with the `databa.tar.gz` file
+
 
 1. Clone the repository:
 
