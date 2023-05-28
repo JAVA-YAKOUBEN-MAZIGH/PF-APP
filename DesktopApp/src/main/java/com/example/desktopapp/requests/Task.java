@@ -35,4 +35,14 @@ public class Task {
     public String getDesc() {
         return desc;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", resolved=" + resolved +
+                '}';
+    }
 }

@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -55,7 +54,6 @@ public class Main extends Application {
 
     public static void goToApp() throws IOException {
         loadUser();
-        System.out.println(user.toString());
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("home-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());

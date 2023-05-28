@@ -20,13 +20,13 @@
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User name" />
-            <TextField fx:id="username_input" text="s">
+            <TextField fx:id="username_input">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </TextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-            <TextField fx:id="email_input" text="s">
+            <TextField fx:id="email_input">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
@@ -55,7 +55,7 @@
                         <Insets bottom="11.0" />
                      </VBox.margin>
                   </Button>
-                  <Text fx:id="login_btn" strokeType="OUTSIDE" strokeWidth="0.0" text="Any account yet ?">
+                  <Text fx:id="login_btn" strokeType="OUTSIDE" strokeWidth="0.0" text="Already an account ?">
                      <font>
                         <Font size="12.0" />
                      </font>

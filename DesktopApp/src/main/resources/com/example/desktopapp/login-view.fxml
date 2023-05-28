@@ -48,7 +48,7 @@
                         <Insets bottom="11.0" />
                      </VBox.margin>
                   </Button>
-                  <Text fx:id="register_btn" strokeType="OUTSIDE" strokeWidth="0.0" text="Already an account ?">
+                  <Text fx:id="register_btn" strokeType="OUTSIDE" strokeWidth="0.0" text="Any account yet ?">
                      <font>
                         <Font size="12.0" />
                      </font>

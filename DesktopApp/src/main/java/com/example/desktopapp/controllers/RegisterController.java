@@ -62,7 +62,7 @@ public class RegisterController {
         }
 
         String requestBodyJson = "{\n\t\"email\": \"" + email + "\",\n\t\"password\": \"" + password + "\",\n\t\"username\": \"" + username + "\"\n}";
-        String requestUrl = "http://" + Utils.get("db") + "/api/auth/local/?populate=*";
+        String requestUrl = "http://" + Utils.get("db") + "/api/auth/local/register?populate=*";
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             // Création de la requête POST avec le corps JSON
