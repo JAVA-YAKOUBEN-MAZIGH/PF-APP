@@ -175,7 +175,7 @@ public class HomeController {
     private void createTask() {
         String[] datas = EditBox.edit(new Task());
 
-        if (datas == null) return;
+        if (datas[0] == null) return;
 
         String requestBodyJson = "{\n" +
                 "  \"data\": {\n" +

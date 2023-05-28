@@ -4,6 +4,7 @@ import com.example.desktopapp.requests.Task;
 import com.example.desktopapp.requests.Tasks;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -29,7 +30,7 @@ public class EditBox {
         textField1.setPrefWidth(362.0);
         textField1.setPromptText("Task name");
 
-        TextField textField2 = new TextField(task.getDesc());
+        TextArea textField2 = new TextArea(task.getDesc());
         textField2.setLayoutX(24.0);
         textField2.setLayoutY(92.0);
         textField2.setPrefHeight(92.0);

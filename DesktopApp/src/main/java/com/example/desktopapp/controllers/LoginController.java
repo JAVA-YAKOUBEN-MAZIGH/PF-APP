@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -22,7 +23,10 @@ import java.io.IOException;
 
 public class LoginController {
     @FXML
-    private TextField email_input, password_input, db_input;
+    private TextField email_input, db_input;
+
+    @FXML
+    private PasswordField password_input;
 
     @FXML
     private Text register_btn, error;
