@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" prefHeight="399.0" prefWidth="269.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.desktopapp.controllers.LoginController">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+         <font>
+            <Font name="Apple Symbols" size="40.0" />
+         </font>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Text>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+            <TextField fx:id="email_input" text="">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+            <TextField fx:id="password_input">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ip:port Strapi" />
+            <TextField fx:id="db_input">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </TextField>
+            <Text fx:id="error" strokeType="OUTSIDE" strokeWidth="0.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin></Text>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button fx:id="login_btn" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Login">
+                     <VBox.margin>
+                        <Insets bottom="11.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Text fx:id="register_btn" strokeType="OUTSIDE" strokeWidth="0.0" text="Already an account ?">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Text>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" top="40.0" />
+         </padding>
+      </VBox>
+   </children>
+</VBox>
