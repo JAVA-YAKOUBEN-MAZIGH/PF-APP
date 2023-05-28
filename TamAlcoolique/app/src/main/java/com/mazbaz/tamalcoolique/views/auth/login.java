@@ -28,13 +28,15 @@ import java.util.Map;
 public class login extends AppCompatActivity {
     private TextView error_field;
     private Button go;
-    private TextInputEditText email, password;
+    private TextInputEditText email, password, database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Utils.getData(getApplicationContext(), "jwt") != null) {
             goToMain();
+            return;
         }
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -43,6 +45,14 @@ public class login extends AppCompatActivity {
         go = findViewById(R.id.button);
         email = findViewById(R.id.email_input);
         password = findViewById(R.id.password_input);
+        database = findViewById(R.id.database_input);
+
+        if (Utils.getData(getApplicationContext(), "db") != null) {
+            database.setText(Utils.getData(getApplicationContext(), "db"));
+        } else {
+            Utils.storeData(getApplicationContext(), "db", database.getEditableText().toString());
+        }
+
         findViewById(R.id.goToRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +68,11 @@ public class login extends AppCompatActivity {
         });
     }
     private void login() {
+        if (database.getEditableText().toString().length() == 0) {
+            error_field.setText("Strapi needed !");
+            return;
+        }
+
         Volley.newRequestQueue(this).add(new StringRequest(Request.Method.POST, "http://" + Utils.getData(getApplicationContext(), "db") + "/api/auth/local/?populate=*", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -108,7 +123,9 @@ public class login extends AppCompatActivity {
     }
 
     public void  goToMain() {
+        super.onPause();
         this.finish();
+
         startActivity(new Intent(login.this, MainActivity.class));
     }
     public void onPause() {

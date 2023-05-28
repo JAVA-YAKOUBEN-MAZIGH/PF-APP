@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.mazbaz.tamalcoolique.requests.User;
+import com.mazbaz.tamalcoolique.views.auth.login;
 import com.mazbaz.tamalcoolique.views.game.game;
 import com.mazbaz.tamalcoolique.views.home.home;
 import com.mazbaz.tamalcoolique.views.inventory.inventory;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Utils.removeData(getApplicationContext(), "jwt");
-                setContentView(R.layout.activity_login);
+                startActivity(new Intent(MainActivity.this, login.class));
 
                 stopService(BackGroundIntent);
             }

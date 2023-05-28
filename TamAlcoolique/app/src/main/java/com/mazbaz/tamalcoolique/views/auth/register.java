@@ -68,6 +68,11 @@ public class register extends AppCompatActivity {
     }
 
     private void register() {
+        if (database.getEditableText().toString().length() == 0) {
+            error_field.setText("Strapi needed !");
+            return;
+        }
+
         Utils.storeData(getApplicationContext(), "db", database.getEditableText().toString());
         Volley.newRequestQueue(this).add(new StringRequest(Request.Method.POST, "http://" + Utils.getData(getApplicationContext(), "db") + "/api/auth/local/register?populate=*", new Response.Listener<String>() {
             @Override
