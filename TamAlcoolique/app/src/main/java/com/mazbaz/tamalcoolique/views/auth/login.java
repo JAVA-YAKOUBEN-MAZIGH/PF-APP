@@ -123,9 +123,7 @@ public class login extends AppCompatActivity {
     }
 
     public void  goToMain() {
-        super.onPause();
-        this.finish();
-
+        finish();
         startActivity(new Intent(login.this, MainActivity.class));
     }
     public void onPause() {
